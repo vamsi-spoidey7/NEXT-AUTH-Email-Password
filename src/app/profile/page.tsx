@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const getUserDetails = async (setUserData) => {
+const getUserDetails = async (setUserData:any) => {
     try {
         const response = await axios.get("/api/users/data");
         console.log(response.data);
