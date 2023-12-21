@@ -5,6 +5,21 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const getUserDetails = async (setUserData) => {
+    try {
+        const response = await axios.get("/api/users/data");
+        console.log(response.data);
+        const userData = response.data.profileData;
+        const username = response.data.profileData.username;
+        const _id = response.data.profileData._id;
+        const email = response.data.profileData.email;
+        setUserData({...userData,username:username,email:email,_id:_id});
+    } catch (error:any) {
+        console.error("Error fetching user details:", error.message);
+        toast.error("Failed to get user details");
+    }
+}
+
 export default function ProfilePage() {
     const router = useRouter();
 
@@ -29,14 +44,7 @@ export default function ProfilePage() {
         }
     }
 
-    const getUserDetails = async () => {
-        const response = await axios.get("/api/users/data");
-        console.log(response.data);
-        const username = response.data.profileData.username;
-        const _id = response.data.profileData._id;
-        const email = response.data.profileData.email;
-        setUserData({...userData,username:username,email:email,_id:_id});
-    }
+    
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -54,7 +62,7 @@ export default function ProfilePage() {
                     <p className="text-xl">User id:{" "}</p>
                     {userData._id && <p className="ml-8 bg-green-500 rounded-md px-4 py-2 font-semibold">{userData._id}</p>}
                 </div>
-                <button onClick={getUserDetails} className="px-4 py-2 mt-4 self-center text-white border font-semibold rounded-lg hover:scale-105 transition bg-slate-900 border-slate-900">Get User Details</button>
+                <button onClick={() => getUserDetails(setUserData)} className="px-4 py-2 mt-4 self-center text-white border font-semibold rounded-lg hover:scale-105 transition bg-slate-900 border-slate-900">Get User Details</button>
             </div>
             <button onClick={logout} className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-md hover:scale-105 transition">Logout</button>
         </div>
