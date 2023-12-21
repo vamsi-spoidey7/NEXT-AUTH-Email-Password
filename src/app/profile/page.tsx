@@ -5,6 +5,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+export const dynamic = "force-dynamic";
+
 const getUserDetails = async (setUserData:any) => {
     try {
         const response = await axios.get("/api/users/data");
