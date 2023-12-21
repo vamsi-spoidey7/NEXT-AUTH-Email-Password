@@ -28,7 +28,7 @@ export const sendEmail = async ({email,emailType,userId}:any)=>{
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
             auth: {
-                user: process.env.EMAIL,
+                user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
         });
@@ -40,8 +40,18 @@ export const sendEmail = async ({email,emailType,userId}:any)=>{
             html: htmlContent(emailType,hashedToken)
         }
 
-        const mailResponse = await transporter.sendMail(mailOptions);
-        return mailResponse;
+        await new Promise((resolve, reject) => {
+            // send mail
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    console.log(info);
+                    resolve(info);
+                }
+            });
+        });
 
     } catch (error:any) {
         throw new Error(error.message);
