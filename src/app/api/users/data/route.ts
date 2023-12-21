@@ -16,6 +16,6 @@ export async function GET(request:NextRequest){
             profileData: user
         })
     } catch (error:any) {
-        return NextResponse.json({error:error.meesage,status:400})
+        return NextResponse.json({error:error.message,status:400})
     }
 }
